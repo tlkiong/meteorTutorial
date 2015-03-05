@@ -1,14 +1,26 @@
 <head>
-  <title>meteorTutorial-simple-todos</title>
+  <title>Todo List</title>
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
+  <div class="container">
+      <header>
+          <h1>Todo List</h1>
+      </header>
 
-  {{> hello}}
+      <!-- add a form below the h1 -->
+      <form class="new-task">
+        <input type="text" name="message" placeholder="Type to add new tasks" />
+      </form>
+
+      <ul>
+          {{#each taskCollection}}
+            {{> taskTemplate}}
+          {{/each}}
+      </ul>
+  </div>
 </body>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="taskTemplate">
+  <li>{{text}}</li>
 </template>

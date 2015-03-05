@@ -1,20 +1,33 @@
-if (Meteor.isClient) {
-  // counter starts at 0
-  Session.setDefault('counter', 0);
+TasksData = new Mongo.Collection("collectionOfData");
 
-  Template.hello.helpers({
-    counter: function () {
-      return Session.get('counter');
-    }
-  });
+  if (Meteor.isClient) {
+    // This code only runs on the client
+    Template.body.helpers({
+      taskCollection: function () {
+        return TasksData.find({});
+      }
+    });
 
-  Template.hello.events({
-    'click button': function () {
-      // increment the counter when button is clicked
-      Session.set('counter', Session.get('counter') + 1);
-    }
-  });
-}
+    // Inside the if (Meteor.isClient) block, right after Template.body.helpers:
+    Template.body.events({
+      "submit .new-task": function (event) {
+        // This function is called when the new task form is submited
+
+        var text = event.target.message.value;
+
+        TasksData.insert({
+          text: text,
+          createdAt: new Date() // current time
+        });
+
+        // Clear form
+        event.target.message.value = "";
+
+        // Prevent default form submit
+        return false;
+      }
+    });
+  }
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
